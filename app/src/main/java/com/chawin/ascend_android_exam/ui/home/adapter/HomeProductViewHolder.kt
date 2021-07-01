@@ -3,6 +3,7 @@ package com.chawin.ascend_android_exam.ui.home.adapter
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.chawin.ascend_android_exam.R
 import com.chawin.ascend_android_exam.databinding.HomeProductItemBinding
 import com.chawin.ascend_android_exam.domain.home.Product
 import com.chawin.ascend_android_exam.ext.toAmountFormat2Digit
@@ -19,11 +20,16 @@ class HomeProductViewHolder(private val itemBinding: HomeProductItemBinding) :
 
         Glide.with(itemBinding.ivProductPhoto)
             .load(item.image)
+            .placeholder(R.drawable.ic_default_image)
+            .fallback(R.drawable.ic_default_image)
+            .error(R.drawable.ic_default_image)
             .into(itemBinding.ivProductPhoto)
 
 
         itemBinding.tvProductName.text = item.title
         itemBinding.tvProductPrice.text = item.price.toAmountFormat2Digit()
+
+        itemBinding.dessertCard.setOnClickListener { recyclerItemListener.onItemSelected(item) }
     }
 }
 

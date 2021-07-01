@@ -1,11 +1,10 @@
 package com.chawin.ascend_android_exam.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.chawin.ascend_android_exam.domain.home.GetProductsUseCase
 import com.chawin.ascend_android_exam.domain.home.Product
+import com.chawin.ascend_android_exam.util.SingleLiveEvent
+import com.hadilq.liveevent.LiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -17,21 +16,25 @@ class HomeViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase
 ) : ViewModel() {
 
-    private val _dialogError = MutableLiveData<String>()
-    val dialogError: LiveData<String> = _dialogError
+    private val _dialogError = SingleLiveEvent<String>()
+    val dialogError: SingleLiveEvent<String> = _dialogError
 
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean> = _loading
+    private val _loading = SingleLiveEvent<Boolean>()
+    val loading: SingleLiveEvent<Boolean> = _loading
 
-    private var _showEmptyLayout = MutableLiveData<Boolean>()
-    val showEmptyLayout: LiveData<Boolean> = _showEmptyLayout
+    private var _showEmptyLayout = SingleLiveEvent<Boolean>()
+    val showEmptyLayout: SingleLiveEvent<Boolean> = _showEmptyLayout
 
-    private val _home = MutableLiveData<List<Product>>()
-    val product: LiveData<List<Product>> = _home
+    private val _prpducts = MutableLiveData<List<Product>>()
+    val product: LiveData<List<HomeContext>> =
+        Transformations.map(_prpducts, this::transformProducts)
 
-    private val _navigateToProductDetail = MutableLiveData<Product>()
-    val navigateToProductDetail: LiveData<Product>
-        get() = _navigateToProductDetail
+    private val _navigateToProductDetail = SingleLiveEvent<HomeContext>()
+    val navigateToProductDetail: SingleLiveEvent<HomeContext> =_navigateToProductDetail
+
+    init {
+        getProducts()
+    }
 
     fun getProducts() {
         viewModelScope.launch {
@@ -49,7 +52,7 @@ class HomeViewModel @Inject constructor(
                 .collect {
                     if (it.isNotEmpty()) {
                         _showEmptyLayout.value = false
-                        _home.value = it
+                        _prpducts.value = it
                     } else {
                         _showEmptyLayout.value = true
                     }
@@ -61,9 +64,23 @@ class HomeViewModel @Inject constructor(
         _dialogError.value = e.message
     }
 
-    fun openDessertDetail(product: Product) {
+    fun openDessertDetail(product: HomeContext) {
         _navigateToProductDetail.value = product
     }
 
+    private fun transformProducts(products: List<Product>): List<HomeContext> {
+        return products.map {
+            HomeContext(
+                id = it.id,
+                title = it.title,
+                image = it.image,
+                content = it.content,
+                isNewProduct = it.isNewProduct,
+                price = it.price
+            )
+        }
+    }
 
 }
+
+

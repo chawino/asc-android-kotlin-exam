@@ -5,14 +5,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chawin.ascend_android_exam.databinding.HomeProductItemBinding
 import com.chawin.ascend_android_exam.databinding.HomeTitleItemBinding
-import com.chawin.ascend_android_exam.domain.home.Product
+import com.chawin.ascend_android_exam.ui.home.HomeContext
 import com.chawin.ascend_android_exam.ui.home.HomeViewModel
 
-class HomeAdapter(private val homeViewModel: HomeViewModel, private val product: List<Product>) :
+class HomeAdapter(
+    private val homeViewModel: HomeViewModel,
+    private val products: ArrayList<HomeContext>
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+
     private val onItemClickListener: HomeItemListener = object : HomeItemListener {
-        override fun onItemSelected(product: Product) {
+        override fun onItemSelected(product: HomeContext) {
             homeViewModel.openDessertDetail(product)
         }
     }
@@ -26,22 +30,20 @@ class HomeAdapter(private val homeViewModel: HomeViewModel, private val product:
             }
             else -> {
                 val itemBinding =
-                    HomeProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                    HomeProductItemBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
                 HomeProductViewHolder(itemBinding)
             }
         }
 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (position) {
-            0 -> {
-                (holder as HomeTitleViewHolder)
-            }
-            else -> {
-                (holder as HomeProductViewHolder).bind(product[position - 1], onItemClickListener)
-            }
+        if ((holder is HomeProductViewHolder)) {
+            holder.bind(products[position - 1], onItemClickListener)
         }
-//        if (position > 0) (holder as HomeProductViewHolder).bind(product[position], onItemClickListener)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -49,7 +51,13 @@ class HomeAdapter(private val homeViewModel: HomeViewModel, private val product:
     }
 
     override fun getItemCount(): Int {
-        return product.size + 1
+        return products.size + 1
+    }
+
+    fun updateData(homes: List<HomeContext>) {
+        products.clear()
+        products.addAll(homes)
+        notifyDataSetChanged()
     }
 }
 

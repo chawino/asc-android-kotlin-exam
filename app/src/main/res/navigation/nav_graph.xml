@@ -11,6 +11,22 @@
         android:label="@string/fragment_home_label"
         tools:layout="@layout/fragment_home">
 
+        <action
+            android:id="@+id/action_homeFragment_to_detailFragment"
+            app:destination="@+id/DetailFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/DetailFragment"
+        android:name="com.chawin.ascend_android_exam.ui.detail.DetailFragment"
+        android:label="@string/fragment_detail_label"
+        tools:layout="@layout/fragment_detail">
+
+        <argument
+            android:name="product"
+            app:argType="com.chawin.ascend_android_exam.ui.home.HomeContext" />
+
     </fragment>
 
 </navigation>

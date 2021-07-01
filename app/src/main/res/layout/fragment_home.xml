@@ -2,10 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/mainContent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
     tools:context=".ui.home.HomeFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -20,25 +19,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvNoInternetConnection"
-        app:spanCount="2"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:spanCount="@integer/grid_item_count"
         tools:itemCount="20"
         tools:listitem="@layout/home_product_item" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvNoInternetConnection"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="#68FF0000"
-        android:gravity="center"
-        android:padding="8dp"
-        android:text="No Innternet"
-        android:textColor="@color/white"
-        android:textSize="18dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <ProgressBar
         android:id="@+id/progressBar"

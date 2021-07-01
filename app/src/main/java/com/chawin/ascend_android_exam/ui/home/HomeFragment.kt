@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleObserver
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chawin.ascend_android_exam.R
 import com.chawin.ascend_android_exam.databinding.FragmentHomeBinding
@@ -19,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : Fragment(), LifecycleObserver {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
-    private lateinit var adapter: HomeAdapter
+    private val homeAdapter: HomeAdapter by lazy { HomeAdapter(viewModel, arrayListOf()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,24 +33,12 @@ class HomeFragment : Fragment(), LifecycleObserver {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        binding.recyclerView.apply {
-            val layoutManager = (layoutManager as GridLayoutManager).setSpanSizeLookup(object :
-                GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    return if (position == 0)
-                        2
-                    else
-                        1
-                }
-            })
-            addItemDecoration(GridSpacingItemDecoration(2, 32, true))
-        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getProducts()
+        setupRecyclerView()
     }
 
     private fun observe() {
@@ -84,11 +73,47 @@ class HomeFragment : Fragment(), LifecycleObserver {
             }
         })
         viewModel.product.observe(this, { homes ->
-            adapter = HomeAdapter(viewModel, homes)
-            binding.recyclerView.adapter = adapter
+            homeAdapter.updateData(homes)
         })
         viewModel.navigateToProductDetail.observe(this, {
-
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToDetailFragment(
+                    it
+                )
+            )
         })
+    }
+
+    private fun setupRecyclerView() {
+        val layoutManager = GridLayoutManager(context, 2)
+        binding.recyclerView.apply {
+            layoutManager.spanSizeLookup = object :
+                GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if (position == 0)
+                        resources.getInteger(R.integer.grid_item_count)
+                    else
+                        1
+                }
+            }
+            addItemDecoration(
+                GridSpacingItemDecoration(
+                    resources.getInteger(R.integer.grid_item_count),
+                    32,
+                    true
+                )
+            )
+            this.layoutManager = layoutManager
+            this.adapter = homeAdapter
+            postponeEnterTransition()
+            viewTreeObserver.addOnPreDrawListener {
+                startPostponedEnterTransition()
+                true
+            }
+        }
+    }
+
+    companion object {
+        fun newInstance() = HomeFragment()
     }
 }

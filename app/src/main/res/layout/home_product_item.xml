@@ -20,7 +20,7 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivDesertPhoto"
+            android:id="@+id/ivProductPhoto"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvDesertNewTag"
+            android:id="@+id/tvProductNewTag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16"
@@ -39,12 +39,12 @@
             android:text="@string/tag_new_label"
             android:textColor="@color/red_500"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@+id/ivDesertPhoto"
-            app:layout_constraintTop_toTopOf="@+id/ivDesertPhoto"
+            app:layout_constraintEnd_toEndOf="@+id/ivProductPhoto"
+            app:layout_constraintTop_toTopOf="@+id/ivProductPhoto"
             tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvDesertName"
+            android:id="@+id/tvProductName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16"
@@ -54,15 +54,15 @@
             android:maxLines="2"
             android:layout_marginTop="@dimen/margin_8"
             android:textColor="@color/black303030"
-            android:textSize="@dimen/text_size_18"
+            android:textSize="@dimen/text_size_16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivDesertPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/ivProductPhoto"
             tools:text="Signature Chocolate Chip Lactation Cookies" />
 
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvDesertPrice"
+            android:id="@+id/tvProductPrice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_8"
@@ -71,9 +71,9 @@
             android:maxLines="2"
             android:textColor="@color/red_500"
             android:textSize="@dimen/text_size_18"
-            app:layout_constraintEnd_toEndOf="@id/tvDesertName"
-            app:layout_constraintStart_toStartOf="@id/tvDesertName"
-            app:layout_constraintTop_toBottomOf="@+id/tvDesertName"
+            app:layout_constraintEnd_toEndOf="@id/tvProductName"
+            app:layout_constraintStart_toStartOf="@id/tvProductName"
+            app:layout_constraintTop_toBottomOf="@+id/tvProductName"
             tools:text="18.99" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

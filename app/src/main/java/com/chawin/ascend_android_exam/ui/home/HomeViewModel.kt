@@ -4,7 +4,6 @@ import androidx.lifecycle.*
 import com.chawin.ascend_android_exam.domain.home.GetProductsUseCase
 import com.chawin.ascend_android_exam.domain.home.Product
 import com.chawin.ascend_android_exam.util.SingleLiveEvent
-import com.hadilq.liveevent.LiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -26,11 +25,11 @@ class HomeViewModel @Inject constructor(
     val showEmptyLayout: SingleLiveEvent<Boolean> = _showEmptyLayout
 
     private val _prpducts = MutableLiveData<List<Product>>()
-    val product: LiveData<List<HomeContext>> =
+    val product: LiveData<List<HomeInfo>> =
         Transformations.map(_prpducts, this::transformProducts)
 
-    private val _navigateToProductDetail = SingleLiveEvent<HomeContext>()
-    val navigateToProductDetail: SingleLiveEvent<HomeContext> =_navigateToProductDetail
+    private val _navigateToProductDetail = SingleLiveEvent<HomeInfo>()
+    val navigateToProductDetail: SingleLiveEvent<HomeInfo> =_navigateToProductDetail
 
     init {
         getProducts()
@@ -64,13 +63,13 @@ class HomeViewModel @Inject constructor(
         _dialogError.value = e.message
     }
 
-    fun openDessertDetail(product: HomeContext) {
+    fun openDessertDetail(product: HomeInfo) {
         _navigateToProductDetail.value = product
     }
 
-    private fun transformProducts(products: List<Product>): List<HomeContext> {
+    private fun transformProducts(products: List<Product>): List<HomeInfo> {
         return products.map {
-            HomeContext(
+            HomeInfo(
                 id = it.id,
                 title = it.title,
                 image = it.image,

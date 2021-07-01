@@ -5,18 +5,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.chawin.ascend_android_exam.databinding.HomeProductItemBinding
 import com.chawin.ascend_android_exam.databinding.HomeTitleItemBinding
-import com.chawin.ascend_android_exam.ui.home.HomeContext
+import com.chawin.ascend_android_exam.ui.home.HomeInfo
 import com.chawin.ascend_android_exam.ui.home.HomeViewModel
 
 class HomeAdapter(
     private val homeViewModel: HomeViewModel,
-    private val products: ArrayList<HomeContext>
+    private val products: ArrayList<HomeInfo>
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     private val onItemClickListener: HomeItemListener = object : HomeItemListener {
-        override fun onItemSelected(product: HomeContext) {
+        override fun onItemSelected(product: HomeInfo) {
             homeViewModel.openDessertDetail(product)
         }
     }
@@ -54,7 +54,7 @@ class HomeAdapter(
         return products.size + 1
     }
 
-    fun updateData(homes: List<HomeContext>) {
+    fun updateData(homes: List<HomeInfo>) {
         products.clear()
         products.addAll(homes)
         notifyDataSetChanged()

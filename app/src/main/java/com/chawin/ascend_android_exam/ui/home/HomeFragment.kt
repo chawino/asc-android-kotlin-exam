@@ -87,5 +87,8 @@ class HomeFragment : Fragment(), LifecycleObserver {
             adapter = HomeAdapter(viewModel, homes)
             binding.recyclerView.adapter = adapter
         })
+        viewModel.navigateToProductDetail.observe(this, {
+
+        })
     }
 }

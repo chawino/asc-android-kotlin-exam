@@ -29,6 +29,10 @@ class HomeViewModel @Inject constructor(
     private val _home = MutableLiveData<List<Product>>()
     val product: LiveData<List<Product>> = _home
 
+    private val _navigateToProductDetail = MutableLiveData<Product>()
+    val navigateToProductDetail: LiveData<Product>
+        get() = _navigateToProductDetail
+
     fun getProducts() {
         viewModelScope.launch {
             getProductsUseCase.execute(Unit, false)
@@ -57,8 +61,8 @@ class HomeViewModel @Inject constructor(
         _dialogError.value = e.message
     }
 
-    fun onDessertDetail(product: Product) {
-
+    fun openDessertDetail(product: Product) {
+        _navigateToProductDetail.value = product
     }
 
 

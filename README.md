@@ -38,4 +38,8 @@ design with `Clean Architecture` and `Android Architecture Components (MVVM)`
 
 ## Screenshot
 
-![Home](/assets/ss1.jpg "SS1") ![Detail](/assets/ss2.jpg "SS1")
+- Home
+![Home](/assets/ss1.jpg "SS1") 
+
+- Detail
+![Detail](/assets/ss2.jpg "SS1")

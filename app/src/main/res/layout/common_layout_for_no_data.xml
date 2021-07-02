@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/no_data"
         android:textColor="@color/black303030"
-        android:textSize="@dimen/text_size_18"/>
+        android:textSize="@dimen/text_size_24"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

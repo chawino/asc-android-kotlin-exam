@@ -9,11 +9,12 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8"
+        android:fontFamily="@font/th_sarabun_new_bold"
+        android:freezesText="true"
         android:text="@string/start_picking_your_treats_label"
         android:textColor="@color/black303030"
-        android:textSize="@dimen/text_size_24"
-        android:freezesText="true"
-        android:layout_marginStart="@dimen/margin_8"
+        android:textSize="@dimen/text_size_30"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

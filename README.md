@@ -28,16 +28,14 @@ design with `Clean Architecture` and `Android Architecture Components (MVVM)`
 - [Android navigation](https://developer.android.com/guide/navigation)
 
 ## How to Build & Run project
-  ===================================
-  Step 1. Clone Project or Download Project zip file 
-  Step 2. Open Android Studio app
-  Step 3. Choose File -> Open... -> After that Select the File location where your file is located
-  Step 4. Waiting for gradle build
-  Step 5. Run button will enable
-  
-  Done.
-  ===================================
+
+  - Step 1. Clone Project or Download Project zip file 
+  - Step 2. Open Android Studio app
+  - Step 3. Choose File -> Open... -> After that Select the File location where your file is located
+  - Step 4. Waiting for gradle build
+  - Step 5. Run button will enable
+  - Done.
 
 ## Screenshot
 
-![Home](/assets/ss1.png "SS1") ![Detail](/assets/ss2.png "SS1")
+![Home](/assets/ss1.jpg "SS1") ![Detail](/assets/ss2.jpg "SS1")

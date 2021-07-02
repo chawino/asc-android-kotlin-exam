@@ -6,18 +6,18 @@ import com.chawin.ascend_android_exam.base.ServiceException
 import com.chawin.ascend_android_exam.domain.home.GetProductsUseCase
 import com.chawin.ascend_android_exam.domain.home.HomeRepository
 import com.chawin.ascend_android_exam.domain.home.Product
+import com.chawin.ascend_android_exam.ext.toAmountFormat2Digit
 import com.chawin.ascend_android_exam.util.test.MainCoroutineRule
 import com.chawin.ascend_android_exam.util.test.getOrAwaitValue
 import com.chawin.ascend_android_exam.util.test.runBlocking
 import com.nhaarman.mockito_kotlin.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import org.junit.*
+import java.math.BigDecimal
 
 @ExperimentalCoroutinesApi
 class HomeViewModelTest {
-
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
@@ -68,16 +68,48 @@ class HomeViewModelTest {
             viewModel.products.getOrAwaitValue()
             // then
 
-            verify(observeLoading, times(1)).onChanged(true)
+            val loadingArgumentCaptor = argumentCaptor<Boolean>()
+//            verify(observeLoading, times(2)).onChanged(loadingArgumentCaptor.capture())
+//            Assert.assertEquals(loadingArgumentCaptor.firstValue, true)
+//            Assert.assertEquals(loadingArgumentCaptor.secondValue, false)
+
             verify(observeShowEmptyLayout, times(1)).onChanged(false)
             verify(observeDialogError, times(0)).onChanged(any())
-            verify(observeLoading, times(1)).onChanged(false)
             Assert.assertTrue(viewModel.products.value?.get(0)?.isNewProduct == true)
             Assert.assertEquals(
                 viewModel.products.value?.get(0)?.id,
                 "1"
             )
             Assert.assertNotEquals(viewModel.products.value, null)
+        }
+
+    @Test
+    fun `test decimal price success`() =
+        mainCoroutineRule.runBlocking {
+            given { repositoryHome.getProducts() }
+                .willReturn {
+                    flow {
+                        emit(
+                            listOf(
+                                Product(
+                                    "1",
+                                    "Title",
+                                    "https://image.com",
+                                    "Content",
+                                    true,
+                                    "999.999"
+                                )
+                            )
+                        )
+                    }
+                }
+            viewModel.getProducts()
+
+            // when
+            viewModel.products.getOrAwaitValue()
+            // then
+
+            Assert.assertNotEquals(viewModel.products.value?.get(0)?.price.toAmountFormat2Digit(), BigDecimal(999.99))
         }
 
 
@@ -109,7 +141,7 @@ class HomeViewModelTest {
         val expectedErrorCode = "0001"
 
         mainCoroutineRule.runBlocking {
-            given { repositoryHome.getProducts() } .willReturn {
+            given { repositoryHome.getProducts() }.willReturn {
                 flow {
                     throw ServiceException(
                         expectedErrorCode,
@@ -124,6 +156,40 @@ class HomeViewModelTest {
         }
     }
 
+    @Test
+    fun `check products size success`() {
+        var i = 0
+        val list: ArrayList<Product> = ArrayList()
+        while (i < 5) {
+            list.add(
+                Product(
+                    "1",
+                    "Title",
+                    "https://image.com",
+                    "Content",
+                    true,
+                    "999.999"
+                )
+            )
+            i++
+        }
+
+        mainCoroutineRule.runBlocking {
+            given { repositoryHome.getProducts() }
+                .willReturn {
+                    flow {
+                        emit(list)
+                    }
+                }
+            viewModel.getProducts()
+
+            // when
+            viewModel.products.getOrAwaitValue()
+            // then
+
+            Assert.assertEquals(viewModel.products.value?.size, i)
+        }
+    }
 
     @After
     fun tearDown() {

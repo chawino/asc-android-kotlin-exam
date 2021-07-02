@@ -23,6 +23,7 @@ class HomeViewModel @Inject constructor(
     val products: LiveData<List<HomeInfo>> =
         Transformations.map(_products, this::transformProducts)
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val _navigateToProductDetail = LiveEvent<String>()
     val navigateToProductDetail: LiveData<String> = _navigateToProductDetail
 

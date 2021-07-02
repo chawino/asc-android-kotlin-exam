@@ -6,7 +6,6 @@ design with `Clean Architecture` and `Android Architecture Components (MVVM)`
 - Presentation
     - Activity/Fragment
     - ViewModel
-    - Widget
 
 - Domain
     - UseCase

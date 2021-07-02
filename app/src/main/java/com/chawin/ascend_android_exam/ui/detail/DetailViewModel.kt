@@ -2,6 +2,7 @@ package com.chawin.ascend_android_exam.ui.detail
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*
+import com.chawin.ascend_android_exam.base.BaseViewModel
 import com.chawin.ascend_android_exam.domain.detail.GetProductUseCase
 import com.chawin.ascend_android_exam.domain.home.Product
 import com.hadilq.liveevent.LiveEvent
@@ -14,36 +15,22 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val getProductUseCase: GetProductUseCase
-) : ViewModel() {
+) : BaseViewModel() {
     private val productId = MutableLiveData<String>()
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val _dialogError = LiveEvent<String>()
-    val dialogError: LiveData<String> by lazy { _dialogError }
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val _loading = LiveEvent<Boolean>()
-    val loading: LiveData<Boolean> by lazy { _loading }
-
-    private var _showEmptyLayout = LiveEvent<Boolean>()
-    val showEmptyLayout: LiveData<Boolean> by lazy { _showEmptyLayout }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val _product = MutableLiveData<Product>()
     val product: LiveData<DetailInfo> =
         Transformations.map(_product, this::transformDetail)
 
-    private val _navigateToProductDetail = LiveEvent<DetailInfo>()
-    val navigateToProductDetail: LiveData<DetailInfo> = _navigateToProductDetail
-
     fun initialize(productId: String) {
         this.productId.value = productId
-        getProduct(productId)
+        getProduct()
     }
 
-    private fun getProduct(productId: String) {
+    fun getProduct() {
         viewModelScope.launch {
-            getProductUseCase.execute(productId)
+            getProductUseCase.execute(productId.value.toString())
                 .flowOn(Dispatchers.IO)
                 .onStart {
                     _loading.value = true

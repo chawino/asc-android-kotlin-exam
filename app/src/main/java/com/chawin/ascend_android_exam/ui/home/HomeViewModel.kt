@@ -2,6 +2,7 @@ package com.chawin.ascend_android_exam.ui.home
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*
+import com.chawin.ascend_android_exam.base.BaseViewModel
 import com.chawin.ascend_android_exam.domain.home.GetProductsUseCase
 import com.chawin.ascend_android_exam.domain.home.Product
 import com.chawin.ascend_android_exam.util.SingleLiveEvent
@@ -15,18 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase
-) : ViewModel() {
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val _dialogError = LiveEvent<String>()
-    val dialogError: LiveData<String> by lazy { _dialogError }
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val _loading = LiveEvent<Boolean>()
-    val loading: LiveData<Boolean> by lazy { _loading }
-
-    private var _showEmptyLayout = LiveEvent<Boolean>()
-    val showEmptyLayout: LiveData<Boolean> by lazy { _showEmptyLayout }
+) : BaseViewModel() {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val _products = MutableLiveData<List<Product>>()

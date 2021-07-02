@@ -1,89 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/scrollView"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootDessertCardLayout"
     android:layout_width="match_parent"
-    android:background="@color/gray"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:background="@color/gray">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/dessertCardLayout"
-        android:layout_width="match_parent"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dessertCardLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/margin_16">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivProductPhoto"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintDimensionRatio="H,1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_default_image" />
+
+            <TextView
+                android:id="@+id/tvProductNewTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_32"
+                android:layout_marginEnd="@dimen/margin_32"
+                android:freezesText="true"
+                android:text="@string/tag_new_label"
+                android:textColor="@color/red_500"
+                android:textSize="@dimen/text_size_16"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/ivProductPhoto"
+                app:layout_constraintTop_toTopOf="@+id/ivProductPhoto"
+                tools:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvProductName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginEnd="@dimen/margin_16"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:maxLines="2"
+                android:textColor="@color/black303030"
+                android:textSize="@dimen/text_size_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivProductPhoto"
+                tools:text="Signature Chocolate Chip Lactation Cookies" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvProductPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:maxLines="2"
+                android:textColor="@color/red_500"
+                android:textSize="@dimen/text_size_24"
+                app:layout_constraintEnd_toEndOf="@id/tvProductName"
+                app:layout_constraintStart_toStartOf="@id/tvProductName"
+                app:layout_constraintTop_toBottomOf="@+id/tvProductName"
+                tools:text="18.99" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvProductDetail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:gravity="start"
+                android:textColor="@color/black303030"
+                android:textSize="@dimen/text_size_18"
+                app:layout_constraintEnd_toEndOf="@id/tvProductName"
+                app:layout_constraintStart_toStartOf="@id/tvProductName"
+                app:layout_constraintTop_toBottomOf="@+id/tvProductPrice"
+                tools:text="@string/sample_text" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/noDataLayout"
+        layout="@layout/common_layout_for_no_data"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/margin_16">
+        android:indeterminateTint="@color/red_500"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivProductPhoto"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="H,1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_default_image" />
-
-        <TextView
-            android:id="@+id/tvProductNewTag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_32"
-            android:layout_marginEnd="@dimen/margin_32"
-            android:freezesText="true"
-            android:text="@string/tag_new_label"
-            android:textColor="@color/red_500"
-            android:textSize="@dimen/text_size_16"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@+id/ivProductPhoto"
-            app:layout_constraintTop_toTopOf="@+id/ivProductPhoto"
-            tools:visibility="visible" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvProductName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_16"
-            android:layout_marginTop="@dimen/margin_8"
-            android:layout_marginEnd="@dimen/margin_16"
-            android:ellipsize="end"
-            android:gravity="start"
-            android:maxLines="2"
-            android:textColor="@color/black303030"
-            android:textSize="@dimen/text_size_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivProductPhoto"
-            tools:text="Signature Chocolate Chip Lactation Cookies" />
-
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvProductPrice"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8"
-            android:ellipsize="end"
-            android:gravity="start"
-            android:maxLines="2"
-            android:textColor="@color/red_500"
-            android:textSize="@dimen/text_size_24"
-            app:layout_constraintEnd_toEndOf="@id/tvProductName"
-            app:layout_constraintStart_toStartOf="@id/tvProductName"
-            app:layout_constraintTop_toBottomOf="@+id/tvProductName"
-            tools:text="18.99" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvProductDetail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8"
-            android:gravity="start"
-            android:textColor="@color/black303030"
-            android:textSize="@dimen/text_size_18"
-            app:layout_constraintEnd_toEndOf="@id/tvProductName"
-            app:layout_constraintStart_toStartOf="@id/tvProductName"
-            app:layout_constraintTop_toBottomOf="@+id/tvProductPrice"
-            tools:text="@string/sample_text" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

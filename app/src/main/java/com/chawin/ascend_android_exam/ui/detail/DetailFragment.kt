@@ -1,5 +1,6 @@
 package com.chawin.ascend_android_exam.ui.detail
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -42,6 +43,35 @@ class DetailFragment : Fragment(), LifecycleObserver {
     }
 
     private fun observe() {
+        viewModel.dialogError.observe(this, {
+            val dialogBuilder = AlertDialog.Builder(context)
+            dialogBuilder.setTitle("Oops")
+                .setMessage(String.format(getString(R.string.dialog_error_message), it))
+                .setCancelable(false)
+                .setPositiveButton("Retry") { dialog, _ ->
+                    viewModel.getProduct()
+                    dialog.cancel()
+                }
+                .setNegativeButton("Close app") { dialog, _ ->
+                    activity?.finish()
+                    dialog.cancel()
+                }
+            dialogBuilder.create().show()
+        })
+        viewModel.loading.observe(this, {
+            if (it) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+        })
+        viewModel.showEmptyLayout.observe(this, {
+            if (it) {
+                binding.noDataLayout.noDataLayoutContent.visibility = View.VISIBLE
+            } else {
+                binding.noDataLayout.noDataLayoutContent.visibility = View.GONE
+            }
+        })
         viewModel.product.observe(this, {
             it.apply {
                 binding.tvProductName.text = title

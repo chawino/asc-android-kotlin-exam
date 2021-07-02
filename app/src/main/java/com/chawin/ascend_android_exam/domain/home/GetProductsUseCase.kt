@@ -8,7 +8,7 @@ class GetProductsUseCase @Inject constructor(
     private val repository: HomeRepository
 ) : UseCase<Unit, List<Product>>() {
 
-    override suspend fun executeRepo(request: Unit, isRetry: Boolean): Flow<List<Product>> =
+    override suspend fun executeRepo(request: Unit): Flow<List<Product>> =
         repository.getProducts()
 
     override fun validateRequest(request: Unit) = request

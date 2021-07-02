@@ -24,7 +24,9 @@
         tools:itemCount="20"
         tools:listitem="@layout/home_product_item" />
 
-
+    <include
+        android:id="@+id/noDataLayout"
+        layout="@layout/common_layout_for_no_data" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -37,9 +39,5 @@
         app:layout_constraintStart_toStartOf="parent"
         android:indeterminateTint="@color/red_500"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <include
-        android:id="@+id/noDataLayout"
-        layout="@layout/common_layout_for_no_data" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

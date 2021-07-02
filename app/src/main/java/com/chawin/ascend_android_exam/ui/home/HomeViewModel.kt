@@ -1,9 +1,11 @@
 package com.chawin.ascend_android_exam.ui.home
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*
 import com.chawin.ascend_android_exam.domain.home.GetProductsUseCase
 import com.chawin.ascend_android_exam.domain.home.Product
 import com.chawin.ascend_android_exam.util.SingleLiveEvent
+import com.hadilq.liveevent.LiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -15,43 +17,42 @@ class HomeViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase
 ) : ViewModel() {
 
-    private val _dialogError = SingleLiveEvent<String>()
-    val dialogError: SingleLiveEvent<String> = _dialogError
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    private val _dialogError = LiveEvent<String>()
+    val dialogError: LiveData<String> by lazy { _dialogError }
 
-    private val _loading = SingleLiveEvent<Boolean>()
-    val loading: SingleLiveEvent<Boolean> = _loading
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    private val _loading = LiveEvent<Boolean>()
+    val loading: LiveData<Boolean> by lazy { _loading }
 
-    private var _showEmptyLayout = SingleLiveEvent<Boolean>()
-    val showEmptyLayout: SingleLiveEvent<Boolean> = _showEmptyLayout
+    private var _showEmptyLayout = LiveEvent<Boolean>()
+    val showEmptyLayout: LiveData<Boolean> by lazy { _showEmptyLayout }
 
-    private val _prpducts = MutableLiveData<List<Product>>()
-    val product: LiveData<List<HomeInfo>> =
-        Transformations.map(_prpducts, this::transformProducts)
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    private val _products = MutableLiveData<List<Product>>()
+    val products: LiveData<List<HomeInfo>> =
+        Transformations.map(_products, this::transformProducts)
 
-    private val _navigateToProductDetail = SingleLiveEvent<HomeInfo>()
-    val navigateToProductDetail: SingleLiveEvent<HomeInfo> =_navigateToProductDetail
-
-    init {
-        getProducts()
-    }
+    private val _navigateToProductDetail = LiveEvent<HomeInfo>()
+    val navigateToProductDetail: LiveData<HomeInfo> = _navigateToProductDetail
 
     fun getProducts() {
         viewModelScope.launch {
-            getProductsUseCase.execute(Unit, false)
+            getProductsUseCase.execute(Unit)
                 .flowOn(Dispatchers.IO)
                 .onStart {
                     _loading.value = true
-                    _showEmptyLayout.value = false
                 }
                 .onCompletion { _loading.value = false }
                 .catch { e ->
+                    _loading.value = false
                     _showEmptyLayout.value = true
                     showErrorOnLoad(e)
                 }
                 .collect {
                     if (it.isNotEmpty()) {
                         _showEmptyLayout.value = false
-                        _prpducts.value = it
+                        _products.value = it
                     } else {
                         _showEmptyLayout.value = true
                     }
@@ -79,7 +80,6 @@ class HomeViewModel @Inject constructor(
             )
         }
     }
-
 }
 
 

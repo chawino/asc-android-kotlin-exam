@@ -41,10 +41,16 @@ class HomeFragment : Fragment(), LifecycleObserver {
         setupRecyclerView()
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.getProducts()
+    }
+
     private fun observe() {
         viewModel.dialogError.observe(this, {
             val dialogBuilder = AlertDialog.Builder(context)
-            dialogBuilder.setMessage(String.format(getString(R.string.dialog_error_message), it))
+            dialogBuilder.setTitle("Oops")
+                .setMessage(String.format(getString(R.string.dialog_error_message), it))
                 .setCancelable(false)
                 .setPositiveButton("Retry") { dialog, _ ->
                     viewModel.getProducts()
@@ -54,9 +60,7 @@ class HomeFragment : Fragment(), LifecycleObserver {
                     activity?.finish()
                     dialog.cancel()
                 }
-            val alert = dialogBuilder.create()
-            alert.setTitle(getString(R.string.dialog_error_title))
-            alert.show()
+            dialogBuilder.create().show()
         })
         viewModel.loading.observe(this, {
             if (it) {
@@ -72,7 +76,7 @@ class HomeFragment : Fragment(), LifecycleObserver {
                 binding.noDataLayout.noDataLayoutContent.visibility = View.GONE
             }
         })
-        viewModel.product.observe(this, { homes ->
+        viewModel.products.observe(this, { homes ->
             homeAdapter.updateData(homes)
         })
         viewModel.navigateToProductDetail.observe(this, {

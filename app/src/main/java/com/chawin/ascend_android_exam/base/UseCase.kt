@@ -8,9 +8,9 @@ abstract class UseCase<Q, R> {
 
     abstract fun validateRequest(request: Q): Q
 
-    protected abstract suspend fun executeRepo(request: Q, isRetry: Boolean): Flow<R>
+    protected abstract suspend fun executeRepo(request: Q): Flow<R>
 
-    fun execute(request: Q, isRetry: Boolean = true): Flow<R> =
+    fun execute(request: Q): Flow<R> =
         flow { emit(validateRequest(request)) }
-            .flatMapConcat { executeRepo(it, isRetry) }
+            .flatMapConcat { executeRepo(it) }
 }

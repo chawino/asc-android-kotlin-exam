@@ -29,7 +29,7 @@
 
         <argument
             android:name="product"
-            app:argType="com.chawin.ascend_android_exam.ui.home.HomeContext" />
+            app:argType="com.chawin.ascend_android_exam.ui.home.HomeInfo" />
 
     </fragment>
 

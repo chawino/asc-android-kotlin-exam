@@ -1,10 +1,9 @@
-package com.chawin.ascend_android_exam.ui.home
+package com.chawin.ascend_android_exam.ui.detail
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*
-import com.chawin.ascend_android_exam.domain.home.GetProductsUseCase
+import com.chawin.ascend_android_exam.domain.detail.GetProductUseCase
 import com.chawin.ascend_android_exam.domain.home.Product
-import com.chawin.ascend_android_exam.util.SingleLiveEvent
 import com.hadilq.liveevent.LiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -13,9 +12,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val getProductsUseCase: GetProductsUseCase
+class DetailViewModel @Inject constructor(
+    private val getProductUseCase: GetProductUseCase
 ) : ViewModel() {
+    private val productId = MutableLiveData<String>()
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val _dialogError = LiveEvent<String>()
@@ -29,16 +29,21 @@ class HomeViewModel @Inject constructor(
     val showEmptyLayout: LiveData<Boolean> by lazy { _showEmptyLayout }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val _products = MutableLiveData<List<Product>>()
-    val products: LiveData<List<HomeInfo>> =
-        Transformations.map(_products, this::transformProducts)
+    private val _product = MutableLiveData<Product>()
+    val product: LiveData<DetailInfo> =
+        Transformations.map(_product, this::transformDetail)
 
-    private val _navigateToProductDetail = LiveEvent<String>()
-    val navigateToProductDetail: LiveData<String> = _navigateToProductDetail
+    private val _navigateToProductDetail = LiveEvent<DetailInfo>()
+    val navigateToProductDetail: LiveData<DetailInfo> = _navigateToProductDetail
 
-    fun getProducts() {
+    fun initialize(productId: String) {
+        this.productId.value = productId
+        getProduct(productId)
+    }
+
+    private fun getProduct(productId: String) {
         viewModelScope.launch {
-            getProductsUseCase.execute(Unit)
+            getProductUseCase.execute(productId)
                 .flowOn(Dispatchers.IO)
                 .onStart {
                     _loading.value = true
@@ -50,36 +55,25 @@ class HomeViewModel @Inject constructor(
                     showErrorOnLoad(e)
                 }
                 .collect {
-                    if (it.isNotEmpty()) {
-                        _showEmptyLayout.value = false
-                        _products.value = it
-                    } else {
-                        _showEmptyLayout.value = true
-                    }
+                    _showEmptyLayout.value = false
+                    _product.value = it
                 }
         }
     }
+
 
     private fun showErrorOnLoad(e: Throwable) {
         _dialogError.value = e.message
     }
 
-    fun openDessertDetail(productId: String) {
-        _navigateToProductDetail.value = productId
-    }
-
-    private fun transformProducts(products: List<Product>): List<HomeInfo> {
-        return products.map {
-            HomeInfo(
-                id = it.id,
-                title = it.title,
-                image = it.image,
-                content = it.content,
-                isNewProduct = it.isNewProduct,
-                price = it.price
-            )
-        }
-    }
+    private fun transformDetail(product: Product): DetailInfo = DetailInfo(
+        id = product.id,
+        title = product.title,
+        image = product.image,
+        content = product.content,
+        isNewProduct = product.isNewProduct,
+        price = product.price
+    )
 }
 
 

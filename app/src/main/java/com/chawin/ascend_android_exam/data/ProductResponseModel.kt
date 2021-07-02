@@ -1,7 +1,8 @@
-package com.chawin.ascend_android_exam.data.home
+package com.chawin.ascend_android_exam.data
 
 import android.os.Parcelable
 import com.chawin.ascend_android_exam.domain.home.Product
+import com.chawin.ascend_android_exam.ui.home.HomeInfo
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
@@ -15,3 +16,8 @@ data class ProductResponseModel(
     @SerializedName("isNewProduct") @Expose  val isNewProduct: Boolean = false,
     @SerializedName("price") @Expose val price: String?,
 ) : Parcelable
+
+fun ProductResponseModel.mapToDomain(): Product =
+    Product(
+        id, title, image, content, isNewProduct, price
+    )

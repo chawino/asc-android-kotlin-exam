@@ -28,8 +28,8 @@
         tools:layout="@layout/fragment_detail">
 
         <argument
-            android:name="product"
-            app:argType="com.chawin.ascend_android_exam.ui.home.HomeInfo" />
+            android:name="productId"
+            app:argType="string" />
 
     </fragment>
 

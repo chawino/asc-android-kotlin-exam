@@ -32,7 +32,9 @@ class HomeProductViewHolder(private val itemBinding: HomeProductItemBinding) :
 
         itemBinding.dessertCard.setOnClickListener {
             ViewCompat.setTransitionName(itemBinding.ivProductPhoto, "test")
-            recyclerItemListener.onItemSelected(item)
+            item.id?.let {
+                recyclerItemListener.onItemSelected(it)
+            }
 
 //            val directions = HomeFragmentDirections.actionHomeFragmentToDetailFragment(item)
 //            val extra = FragmentNavigatorExtras(

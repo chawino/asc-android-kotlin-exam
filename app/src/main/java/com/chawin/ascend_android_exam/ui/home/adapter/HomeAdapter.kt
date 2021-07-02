@@ -16,8 +16,8 @@ class HomeAdapter(
 
 
     private val onItemClickListener: HomeItemListener = object : HomeItemListener {
-        override fun onItemSelected(product: HomeInfo) {
-            homeViewModel.openDessertDetail(product)
+        override fun onItemSelected(productId: String) {
+            homeViewModel.openDessertDetail(productId)
         }
     }
 
